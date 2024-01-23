@@ -18,7 +18,7 @@ export const setPeople = (number) => ({
 // 리듀서
 const initialState = {
   value: [],
-  people: 0,
+  people: null,
 };
 
 const reducer = (state = initialState, action) => {

@@ -1,24 +1,25 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
 import { useSelector, useDispatch } from 'react-redux';
-import { setPeople,setValue } from '@/redux/Store';
+import { setPeople, setValue } from '@/redux/Store';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 
-const inter = Inter({ subsets: ['latin'] })
-
 export default function Home() {
   const router = useRouter()
-  const numberOfPeople = useSelector((state) => state.people); 
+  const numberOfPeople = useSelector((state) => state.people);
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState(['']);
 
   const handleNumberOfPeopleChange = (e) => {
     const number = parseInt(e.target.value, 10);
-    dispatch(setPeople(number));
+  
+    if (!isNaN(number) && number >= 0) {
+      dispatch(setPeople(number));
+    } else {
+      dispatch(setPeople(null));
+    }
   };
 
   const handleChange = (index, value) => {
@@ -28,16 +29,17 @@ export default function Home() {
   };
 
   const handleClick = () => {
-    if (inputs.some((value) => value.trim() === '')) {
-      alert('유저를 입력해주세요');
-      return;
-    } else {
+    if (inputs.length === numberOfPeople && inputs.every((value) => value.trim() !== '')) {
       router.push('/Slot');
       dispatch(setValue(inputs));
+    } else {
+      alert('유저정보가 비어있습니다');
+      return;
     }
   };
 
-  console.log('inputs : ',inputs)
+  console.log('inputs : ', inputs)
+  console.log('numberOfPeople : ',numberOfPeople)
 
   return (
     <>
@@ -48,21 +50,30 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
-        <Form.Label htmlFor="numberOfPeople">인원 수 선택: </Form.Label>
+      <div className='mainGrid'>
+        <h2>인원수를 선택해주세요</h2>
         <Form.Control
           type="number"
           id="numberOfPeople"
+          placeholder='인원수를 입력해주세요'
           value={numberOfPeople}
           onChange={handleNumberOfPeopleChange}
         />
         {Array.from({ length: numberOfPeople }, (_, index) => (
           <div key={index}>
-            <Form.Label htmlFor={`input${index + 1}`}>{`입력 ${index + 1}: `}</Form.Label>
-            <Form.Control type="text" id={`input${index + 1}`} onChange={(e) => handleChange(index, e.target.value)}/>
+            <Form.Control
+              type="text"
+              id={`input${index + 1}`}
+              placeholder='유저를 입력해주세요'
+              onChange={(e) => handleChange(index, e.target.value)} />
           </div>
         ))}
-        <Button onClick={()=>{handleClick()}}>게임시작</Button>
+        <Button
+          disabled = {numberOfPeople === null || numberOfPeople === 0}
+          onClick={() => { handleClick() }}
+        >
+          게임시작
+        </Button>
       </div>
     </>
   )

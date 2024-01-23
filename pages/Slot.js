@@ -40,14 +40,14 @@ function Slot() {
   }, [spin, result, value]);
 
   return (
-    <div>
-      <div className='slotTxtTwo'>
+    <div className='slotGrid'>
+      <div className='slotTxt'>
         <p style={{ fontSize: '24px', marginBottom: '10px' }}>
           {result[0]}
         </p>
       </div>
       {buttonCount !== 0 ? (
-        <Button onClick={()=>{spinSlot()}}>{spin ? '1번' : '2번'}</Button>
+        <Button variant = {spin ? 'danger' : 'primary'} onClick={()=>{spinSlot()}}>{spin ? '정지' : '시작'}</Button>
       ) : (
         <Button onClick={() => { router.push('/') }}>다시하기</Button>
       )}
