@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
 function Slot() {
@@ -46,9 +47,9 @@ function Slot() {
         </p>
       </div>
       {buttonCount !== 0 ? (
-        <button onClick={spinSlot}>{spin ? '1번' : '2번'}</button>
+        <Button onClick={()=>{spinSlot()}}>{spin ? '1번' : '2번'}</Button>
       ) : (
-        <button onClick={() => { router.push('/') }}>다시하기</button>
+        <Button onClick={() => { router.push('/') }}>다시하기</Button>
       )}
     </div>
   );

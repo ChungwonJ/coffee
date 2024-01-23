@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setPeople,setValue } from '@/redux/Store';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Form from 'react-bootstrap/Form';
+import { Button } from 'react-bootstrap';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -47,8 +49,8 @@ export default function Home() {
       </Head>
 
       <div>
-        <label htmlFor="numberOfPeople">인원 수 선택: </label>
-        <input
+        <Form.Label htmlFor="numberOfPeople">인원 수 선택: </Form.Label>
+        <Form.Control
           type="number"
           id="numberOfPeople"
           value={numberOfPeople}
@@ -56,11 +58,11 @@ export default function Home() {
         />
         {Array.from({ length: numberOfPeople }, (_, index) => (
           <div key={index}>
-            <label htmlFor={`input${index + 1}`}>{`입력 ${index + 1}: `}</label>
-            <input type="text" id={`input${index + 1}`} onChange={(e) => handleChange(index, e.target.value)}/>
+            <Form.Label htmlFor={`input${index + 1}`}>{`입력 ${index + 1}: `}</Form.Label>
+            <Form.Control type="text" id={`input${index + 1}`} onChange={(e) => handleChange(index, e.target.value)}/>
           </div>
         ))}
-        <button onClick={()=>{handleClick()}}>게임시작</button>
+        <Button onClick={()=>{handleClick()}}>게임시작</Button>
       </div>
     </>
   )
