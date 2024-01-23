@@ -4,10 +4,12 @@ import { Inter } from 'next/font/google'
 import { useSelector, useDispatch } from 'react-redux';
 import { setPeople,setValue } from '@/redux/Store';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const router = useRouter()
   const numberOfPeople = useSelector((state) => state.people); 
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState(['']);
@@ -21,6 +23,16 @@ export default function Home() {
     const newInputs = [...inputs];
     newInputs[index] = value;
     setInputs(newInputs);
+  };
+
+  const handleClick = () => {
+    if (inputs.some((value) => value.trim() === '')) {
+      alert('유저를 입력해주세요');
+      return;
+    } else {
+      router.push('/Slot');
+      dispatch(setValue(inputs));
+    }
   };
 
   console.log('inputs : ',inputs)
@@ -48,6 +60,7 @@ export default function Home() {
             <input type="text" id={`input${index + 1}`} onChange={(e) => handleChange(index, e.target.value)}/>
           </div>
         ))}
+        <button onClick={()=>{handleClick()}}>게임시작</button>
       </div>
     </>
   )

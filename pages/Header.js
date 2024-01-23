@@ -10,7 +10,7 @@ function Header(props) {
           className="headerTxt"
           onClick={() => { router.push('/') }}
         >
-          Who Coffee?
+          Whose wallet?
         </p>
       </header>
     </>
