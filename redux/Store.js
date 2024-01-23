@@ -3,6 +3,7 @@ import { createStore } from 'redux';
 // 액션 타입 정의
 const SET_VALUE = 'SET_VALUE';
 const SET_PEOPLE = 'SET_PEOPLE';
+const SET_RESET = 'SET_RESET ';
 
 // 액션 생성자 함수
 export const setValue = (value) => ({
@@ -13,6 +14,10 @@ export const setValue = (value) => ({
 export const setPeople = (number) => ({
   type: SET_PEOPLE,
   payload: number,
+});
+
+export const setReset = () => ({
+  type: SET_RESET,
 });
 
 // 리듀서
@@ -28,11 +33,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         value: action.payload,
       };
+
     case SET_PEOPLE:
       return {
         ...state,
         people: action.payload,
       };
+
+      case SET_RESET:
+        return initialState;
+
     default:
       return state;
   }

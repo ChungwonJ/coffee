@@ -1,14 +1,21 @@
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { setReset } from '@/redux/Store'
+import { useSelector, useDispatch } from 'react-redux';
 
 function Slot() {
+  const dispatch = useDispatch();
   const value = useSelector((state) => state.value);
   const [spin, setSpin] = useState(false);
   const [result, setResult] = useState([]);
   const [buttonCount, setButtonCount] = useState(2);
   const router = useRouter();
+
+  const handleReset = () => {
+    dispatch(setReset());
+    router.push('/');
+  }
 
   useEffect(() => {
     const initialResult = Array.from({ length: value.length }, () => 'Whose wallet?');
@@ -47,9 +54,9 @@ function Slot() {
         </p>
       </div>
       {buttonCount !== 0 ? (
-        <Button variant = {spin ? 'danger' : 'primary'} onClick={()=>{spinSlot()}}>{spin ? '정지' : '시작'}</Button>
+        <Button variant={spin ? 'danger' : 'primary'} onClick={() => { spinSlot() }}>{spin ? '정지' : '시작'}</Button>
       ) : (
-        <Button onClick={() => { router.push('/') }}>다시하기</Button>
+        <Button onClick={() => { handleReset() }}>다시하기</Button>
       )}
     </div>
   );
