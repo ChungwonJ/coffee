@@ -1,10 +1,30 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import { useSelector, useDispatch } from 'react-redux';
+import { setPeople,setValue } from '@/redux/Store';
+import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const numberOfPeople = useSelector((state) => state.people); 
+  const dispatch = useDispatch();
+  const [inputs, setInputs] = useState(['']);
+
+  const handleNumberOfPeopleChange = (e) => {
+    const number = parseInt(e.target.value, 10);
+    dispatch(setPeople(number));
+  };
+
+  const handleChange = (index, value) => {
+    const newInputs = [...inputs];
+    newInputs[index] = value;
+    setInputs(newInputs);
+  };
+
+  console.log('inputs : ',inputs)
+
   return (
     <>
       <Head>
@@ -13,6 +33,22 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <div>
+        <label htmlFor="numberOfPeople">인원 수 선택: </label>
+        <input
+          type="number"
+          id="numberOfPeople"
+          value={numberOfPeople}
+          onChange={handleNumberOfPeopleChange}
+        />
+        {Array.from({ length: numberOfPeople }, (_, index) => (
+          <div key={index}>
+            <label htmlFor={`input${index + 1}`}>{`입력 ${index + 1}: `}</label>
+            <input type="text" id={`input${index + 1}`} onChange={(e) => handleChange(index, e.target.value)}/>
+          </div>
+        ))}
+      </div>
     </>
   )
 }
